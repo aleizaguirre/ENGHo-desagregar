@@ -1,0 +1,72 @@
+
+
+\documentclass[11pt,spanish]{article}
+\usepackage[T1]{fontenc}
+\usepackage{selinput}
+\SelectInputMappings{%
+  aacute={á},
+  ntilde={ñ},
+}
+%%\usepackage[latin9]{inputenc}
+
+\usepackage{array}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{graphicx} 
+
+\title{Desagregar ENGHo} 
+
+\date{\vspace{-5ex}}
+
+\begin{document}
+\maketitle
+\section{Introducción}
+El domino de estimación de la ENGHo  abarca a las personas residentes en los hogares de viviendas particulares de las localidades de la República Argentina con 2.000 o más habitantes. El domino de estimación geográfico mas pequeño es la provincia (y CABA).\\
+Por otro lado, la EPH releva información sobre los aglomerados urbanos con mas de 100 mil habitantes y las capitales de provincia.\\
+La principal diferencia en lo que respecta a cobertura entre ambas encuestas es que la ENGHo es mas amplia en términos geográficos ya que considera todas las localidades con mas de 2 mil habitantes. El universo bajo estudio de la ENGHo contiene al de la EPH (esta es la clave!).\\
+Seria interesante poder diferenciar en la ENGHo, para ciertas variables (empleo, pobreza, etc), sus valores para los grandes aglomerados urbanos (cubiertos por la EPH) y para las pequeñas localidades (El Interior). \\
+El objetivo del trabajo es poder estimar ciertas variables en forma diferenciada, para los grandes aglomerados urbanos y para el Interior. 
+
+\section{Modelo}
+Supongamos que tenemos una variable $y$ y dos zonas diferentes, $A$ y $B$, ademas, supongamos que estamos interesados en estimar la media de $y$ diferenciando por zonas. El modelo viene dado por:\\
+\begin{equation}\label{Modelo}
+y=\beta_{A}I_{A}+\beta_{B}I_{B}+u
+\end{equation}
+donde $I_{A}$ e $I_{B}$ son variables indicadoras de las zonas $A$ y $B$ respectivamente.\\
+De (\ref{Modelo}) tenemos que la media de $y$ en la zona $A$ viene dada por $\beta_{A}$ y la media de $y$ en la zona $B$ viene dada por $\beta_{B}$.\\
+Por ejemplo, supongamos que $y$ es el ingreso, $A$ un aglomerado urbano (Ej: Gran Rosario) y $B$ el Interior (de Santa Fe). No podemos estimar la media del ingreso en cada zona porque no observamos ni $I_{A}$ ni $I_{B}$ ya que la ENGHo no hace esa diferencia.\\
+Ahora bien, la media \textbf{no condicional} de $y$ viene dada por,
+\begin{equation*}
+E(y)=\beta_{A}E(I_{A})+\beta_{B}E(I_{B})+E(u)
+\end{equation*}
+La $E(I_{A})=p_{a}$ y la $E(I_{B})=p_{b}$, siendo $p_{a}$ y $p_{b}$ la proporción de elementos de la población que pertenecen a la zona $A$ y $B$ respectivamente. Asumiendo que  $E(u)=0$, tenemos que
+\begin{equation}\label{Modelo 1}
+E(y)=\beta_{A}p_{a}+\beta_{B}p_{b}
+\end{equation}
+
+\section{Metodología}
+De (\ref{Modelo 1}) tenemos que,
+\begin{equation*}
+\beta_{B}= \dfrac{E(y)-\beta_{A}p_{a}}{p_{b}}
+\end{equation*}
+$\beta_{A}$ es la media de $y$ en la zona $A$ (un aglomerado urbano) la cual puede ser estimada con la EPH, $p_{a}$ y $p_{b}$ son las proporciones del total poblacional  que corresponden al aglomerado urbano y al interior, esto se puede obtener porque conozco el universo (total poblacional al que apuntan) de la EPH y de la ENGHo. El universo de la ENGHo contiene al de la EPH. Por ultimo, la $E(y)$ es la media no condicional (para ambas zonas conjuntamente) de $y$ que se puede obtener tomando el promedio de $y$ en la ENGHo. \\
+Con lo anterior podríamos estimar $\beta_{B}$ de la siguiente manera,
+\begin{equation}\label{estimador}
+\tilde{\beta}_{B}= \dfrac{\hat{E}(y)-\hat{\beta}_{A}\hat{p}_{a}}{\hat{p}_{b}}
+\end{equation}
+
+Los pasos a seguir vienen dados por:
+\begin{itemize}
+\item Estimo $\beta_{A}$ de la EPH. Esto es la media de $y$ para un aglomerado urbano.
+\item Según el universo  de la ENGHo y la EPH calculo $p_{a}$ y $p_{b}$. Lo que representa de la población el aglomerado y el interior.
+\item Estimo $E(y)$ de la ENGHo. Es el promedio de $y$ considerando ambas zonas conjuntamente.
+\item Aplico (\ref{estimador})
+\end{itemize}
+
+\section{Comentarios}
+\begin{itemize}
+\item Las variables que se pueden usar son aquellas comunes a ambas bases. Cuales son?? son interesantes??
+\item El modelo puede extenderse fácilmente a $k$ zonas. Varios aglomerados vs. El Interior.
+\end{itemize}
+
+\end{document}
